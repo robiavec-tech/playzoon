@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playzoon - Gaming Directory</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: white;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 6%;
+      border-bottom: 1px solid #293047;
+    }
+    .logo { font-size: 27px; font-weight: bold; color: #8b7cff; }
+    select, input {
+      padding: 13px;
+      border: 1px solid #39415b;
+      border-radius: 10px;
+      background: #171e32;
+      color: white;
+    }
+    main { max-width: 1050px; margin: auto; padding: 65px 20px; }
+    .hero { text-align: center; }
+    h1 { font-size: clamp(32px, 6vw, 56px); margin-bottom: 12px; }
+    .accent { color: #a294ff; }
+    p { color: #aeb7cd; line-height: 1.6; }
+    #search { width: 100%; max-width: 620px; margin-top: 25px; }
+    h2 { margin-top: 65px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: #171e32;
+      border: 1px solid #303952;
+      padding: 26px;
+      border-radius: 16px;
+      transition: 0.2s;
+    }
+    .card:hover { border-color: #a294ff; transform: translateY(-3px); }
+    .card h3 { margin: 12px 0; }
+    .emoji { font-size: 30px; }
+    footer { text-align: center; padding: 40px; color: #8994ad; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">PLAYZOON</div>
+    <select id="language" aria-label="Language">
+      <option value="en">English</option>
+      <option value="fr" selected>Français</option>
+    </select>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 id="heading">Explore l'univers <span class="accent">gaming</span></h1>
+      <p id="subtitle">Tous les meilleurs liens et ressources gaming au même endroit.</p>
+      <input id="search" type="search" placeholder="Rechercher une catégorie...">
+    </section>
+
+    <h2 id="categoryTitle">Explorer les catégories</h2>
+    <section class="grid" id="categories">
+      <div class="card" data-fr="Actualités" data-en="News">
+        <div class="emoji">📰</div><h3>Actualités</h3>
+      </div>
+      <div class="card" data-fr="Communautés" data-en="Communities">
+        <div class="emoji">🌍</div><h3>Communautés</h3>
+      </div>
+      <div class="card" data-fr="Créateurs" data-en="Creators">
+        <div class="emoji">🎥</div><h3>Créateurs</h3>
+      </div>
+      <div class="card" data-fr="Guides et astuces" data-en="Guides and Tips">
+        <div class="emoji">🎮</div><h3>Guides et astuces</h3>
+      </div>
+      <div class="card" data-fr="Outils" data-en="Tools">
+        <div class="emoji">🛠️</div><h3>Outils</h3>
+      </div>
+      <div class="card" data-fr="Sites web" data-en="Websites">
+        <div class="emoji">🔗</div><h3>Sites web</h3>
+      </div>
+    </section>
+    <p id="empty" hidden>Aucune catégorie trouvée.</p>
+  </main>
+
+  <footer>© 2026 Playzoon. Independent gaming directory.</footer>
+
+  <script>
+    const language = document.getElementById("language");
+    const search = document.getElementById("search");
+    const cards = [...document.querySelectorAll(".card")];
+
+    const translations = {
+      fr: {
+        heading: 'Explore l’univers <span class="accent">gaming</span>',
+        subtitle: "Tous les meilleurs liens et ressources gaming au même endroit.",
+        categoryTitle: "Explorer les catégories",
+        placeholder: "Rechercher une catégorie...",
+        empty: "Aucune catégorie trouvée."
+      },
+      en: {
+        heading: 'Explore the <span class="accent">gaming</span> universe',
+        subtitle: "Discover gaming links and resources in one place.",
+        categoryTitle: "Explore categories",
+        placeholder: "Search categories...",
+        empty: "No categories found."
+      }
+    };
+
+    function updatePage() {
+      const lang = language.value;
+      const t = translations[lang];
+      document.documentElement.lang = lang;
+      document.getElementById("heading").innerHTML = t.heading;
+      document.getElementById("subtitle").textContent = t.subtitle;
+      document.getElementById("categoryTitle").textContent = t.categoryTitle;
+      document.getElementById("empty").textContent = t.empty;
+      search.placeholder = t.placeholder;
+
+      let visible = 0;
+      cards.forEach(card => {
+        const name = card.dataset[lang];
+        card.querySelector("h3").textContent = name;
+        const match = name.toLocaleLowerCase().includes(
+          search.value.trim().toLocaleLowerCase()
+        );
+        card.hidden = !match;
+        if (match) visible++;
+      });
+      document.getElementById("empty").hidden = visible > 0;
+    }
+
+    language.addEventListener("change", updatePage);
+    search.addEventListener("input", updatePage);
+    updatePage();
+  </script>
+</body>
+</html>
