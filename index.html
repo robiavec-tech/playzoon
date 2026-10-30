@@ -201,12 +201,19 @@ const rockstarTranslations = {
   en: "Official GTA 6 website: news, trailers and game information."
 };
 
+
 function updateRockstarLanguage() {
   const lang = language.value;
 
   document.getElementById("rockstarDescription").textContent =
     rockstarTranslations[lang];
+
+  document.getElementById("rockstarLink").textContent =
+    lang === "fr"
+      ? "Visiter le site officiel ↗"
+      : "Visit official website ↗";
 }
+
 
 language.addEventListener("change", updateRockstarLanguage);
 updateRockstarLanguage();
