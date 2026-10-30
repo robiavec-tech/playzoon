@@ -133,6 +133,9 @@
     const language = document.getElementById("language");
     const search = document.getElementById("search");
     const cards = [...document.querySelectorAll("#categories .card")];
+    
+const resources = [...document.querySelectorAll("#resources .card")];
+
 
     const translations = {
       fr: {
@@ -171,6 +174,22 @@
         card.hidden = !match;
         if (match) visible++;
       });
+      
+const query = search.value.trim().toLocaleLowerCase();
+
+let visibleResources = 0;
+
+resources.forEach(card => {
+  const content = card.textContent.toLocaleLowerCase();
+  const match = content.includes(query);
+  card.hidden = !match;
+
+  if (match) visibleResources++;
+});
+
+document.getElementById("resources").hidden =
+  query !== "" && visibleResources === 0;
+
       document.getElementById("empty").hidden = visible > 0;
     }
 
