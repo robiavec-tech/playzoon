@@ -195,6 +195,22 @@ document.getElementById("resources").hidden =
       document.getElementById("empty").hidden = visible > 0;
     }
 
+    
+const rockstarTranslations = {
+  fr: "Site officiel de GTA 6 : actualités, bandes-annonces et informations.",
+  en: "Official GTA 6 website: news, trailers and game information."
+};
+
+function updateRockstarLanguage() {
+  const lang = language.value;
+
+  document.getElementById("rockstarDescription").textContent =
+    rockstarTranslations[lang];
+}
+
+language.addEventListener("change", updateRockstarLanguage);
+updateRockstarLanguage();
+
     language.addEventListener("change", updatePage);
     search.addEventListener("input", updatePage);
     updatePage();
